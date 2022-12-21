@@ -1,37 +1,22 @@
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import { useEffect } from "react";
-import styled from "styled-components";
-import userApi from "../lib/api/user";
-import { UserRes } from "../lib/api/user/schema";
+import { dehydrate, QueryClient } from "react-query";
+import useUser, { fetchUserInformation } from "../hooks/useUser";
+import { queryKeys } from "../react-query/queryKeys";
 
-export default function HomePage(
-  props: InferGetStaticPropsType<typeof getStaticProps>
-) {
-  useEffect(() => {
-    console.log(props.userInformation);
-  }, [props.userInformation]);
+export default function HomePage() {
+  // const { userInformation } = useUser();
 
-  return <H1>HELLO NEXT</H1>;
+  return <h1>HELLO NEXT</h1>;
 }
 
-const H1 = styled.h1`
-  color: blue;
-`;
-
-export const getStaticProps: GetStaticProps<{
-  userInformation: UserRes;
-}> = async () => {
-  const userInformation = await userApi.fetchUser();
-
-  if (!userInformation) {
-    return {
-      notFound: true,
-    };
-  }
+export const getStaticProps = async () => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery([queryKeys.user], fetchUserInformation);
 
   return {
     props: {
-      userInformation,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };
