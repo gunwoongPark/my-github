@@ -7,3 +7,9 @@ export default function HomePage() {
 const H1 = styled.h1`
   color: blue;
 `;
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
+}
