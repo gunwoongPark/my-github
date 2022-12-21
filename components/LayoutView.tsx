@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type PropType = {
   children: React.ReactNode;
 };
@@ -5,7 +7,18 @@ type PropType = {
 const LayoutView: React.FC<PropType> = ({ children }) => {
   return (
     <>
-      <header>HEADER</header>
+      <header>
+        <nav>
+          <ul>
+            <li>
+              <Link href="/">gunwoongPark</Link>
+            </li>
+            <li>
+              <Link href="/repos">Repositories</Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
       <main>{children}</main>
     </>
   );

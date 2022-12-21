@@ -1,5 +1,12 @@
+export type SortType = "created" | "updated" | "pushed" | "full_name";
+export type DirectionType = "asc" | "desc";
+
 export interface ReposReq {
   username: string;
+  sort: SortType;
+  direction: DirectionType;
+  per_page: number;
+  page: number;
 }
 
 export interface ReposRes {
