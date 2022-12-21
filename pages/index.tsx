@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Home() {
+export default function HomePage() {
   return <H1>HELLO NEXT</H1>;
 }
 
