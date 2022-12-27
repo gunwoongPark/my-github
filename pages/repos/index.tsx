@@ -1,19 +1,12 @@
-import { filter, isEmpty, isNil } from "lodash";
+import { isEmpty, isNil } from "lodash";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { dehydrate, QueryClient } from "react-query";
-import useIsReady from "../../hooks/useIsReady";
 import useRepos, { fetchRepositories } from "../../hooks/useRepos";
-import {
-  DirectionType,
-  FilterValueType,
-  SortType,
-} from "../../lib/api/repos/schema";
+import type { DirectionType, SortType } from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
 
 const ReposPage = () => {
-  // router
   const router = useRouter();
 
   const { reposList, isLoading, setFilterValue } = useRepos();
@@ -21,8 +14,7 @@ const ReposPage = () => {
   return (
     <>
       <select
-        // value={router.query.direction}
-        defaultValue={router.query.direction ?? "asc"}
+        defaultValue={router.query.direction}
         onChange={(e) => {
           setFilterValue((prevFilterValueState) => ({
             ...prevFilterValueState,
@@ -40,8 +32,7 @@ const ReposPage = () => {
       </select>
 
       <select
-        // value={router.query.sort}
-        defaultValue={router.query.sort ?? "full_name"}
+        defaultValue={router.query.sort}
         onChange={(e) => {
           setFilterValue((prevFilterValueState) => ({
             ...prevFilterValueState,
@@ -87,13 +78,14 @@ const ReposPage = () => {
 
 export default ReposPage;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(
     [queryKeys.repos, "full_name", "asc", 1],
     () => fetchRepositories(`&sort=full_name&direction=asc&page=1`)
   );
+
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
