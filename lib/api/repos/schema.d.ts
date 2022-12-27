@@ -1,4 +1,7 @@
+// default : full_name
 export type SortType = "created" | "updated" | "pushed" | "full_name";
+
+// default : asc
 export type DirectionType = "asc" | "desc";
 
 export interface ReposReq {
