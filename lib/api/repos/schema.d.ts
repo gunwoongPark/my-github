@@ -4,12 +4,17 @@ export type SortType = "created" | "updated" | "pushed" | "full_name";
 // default : asc
 export type DirectionType = "asc" | "desc";
 
+export type FilterValueType = {
+  [key: string]: SortType | DirectionType | number;
+
+  sort?: SortType;
+  direction?: DirectionType;
+  page?: number;
+};
+
 export interface ReposReq {
   username: string;
-  sort: SortType;
-  direction: DirectionType;
-  per_page: number;
-  page: number;
+  query?: string;
 }
 
 export interface ReposRes {

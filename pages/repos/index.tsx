@@ -1,6 +1,6 @@
-import { GetStaticProps } from "next";
+import { isEmpty, isNil } from "lodash";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { dehydrate, QueryClient } from "react-query";
 import useRepos, { fetchRepositories } from "../../hooks/useRepos";
 import { DirectionType, SortType } from "../../lib/api/repos/schema";
@@ -10,17 +10,18 @@ const ReposPage = () => {
   // router
   const router = useRouter();
 
-  const { reposList, isLoading, setSort, setDirection } = useRepos();
-
-  useEffect(() => {
-    console.log(reposList);
-  }, [reposList]);
+  const { reposList, isLoading, setFilterValue } = useRepos();
 
   return (
     <>
       <select
+        value={router.query.direction ?? "asc"}
         onChange={(e) => {
-          setDirection(e.target.value as DirectionType);
+          setFilterValue((prevFilterValueState) => ({
+            ...prevFilterValueState,
+            direction: e.target.value as DirectionType,
+          }));
+
           router.replace({
             pathname: "/repos",
             query: { direction: e.target.value, sort: router.query.sort },
@@ -32,8 +33,13 @@ const ReposPage = () => {
       </select>
 
       <select
+        value={router.query.sort ?? "full_name"}
         onChange={(e) => {
-          setSort(e.target.value as SortType);
+          setFilterValue((prevFilterValueState) => ({
+            ...prevFilterValueState,
+            sort: e.target.value as SortType,
+          }));
+
           router.replace({
             pathname: "/repos",
             query: { direction: router.query.direction, sort: e.target.value },
@@ -45,29 +51,50 @@ const ReposPage = () => {
         <option value="updated">updated</option>
         <option value="pushed">pushed</option>
       </select>
+      {(() => {
+        if (isLoading) {
+          return <p>Loading...</p>;
+        }
 
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <ul>
-          {reposList?.map((repos, idx) => (
-            <li key={idx}>{repos.name}</li>
-          ))}
-        </ul>
-      )}
+        if (isNil(reposList)) {
+          return <p>Error Occurred</p>;
+        }
+
+        if (isEmpty(reposList)) {
+          return <p>Empty</p>;
+        }
+
+        return (
+          <ul>
+            {reposList.map((repos, idx) => (
+              <li key={idx}>{repos.name}</li>
+            ))}
+          </ul>
+        );
+      })()}
     </>
   );
 };
 
 export default ReposPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(
-    [queryKeys.repos, "full_name", "asc", 1],
-    () => fetchRepositories("full_name", "asc", 5, 1)
-  );
 
+  await queryClient.prefetchQuery(
+    [
+      queryKeys.repos,
+      (context.query.sort as SortType) ? context.query.sort : "full_name",
+      (context.query.direction as DirectionType)
+        ? context.query.direction
+        : "asc",
+      context.query.page ?? 1,
+    ],
+    () =>
+      fetchRepositories(
+        `&sort=${context.query.sort}&direction=${context.query.direction}&page=${context.query.page}`
+      )
+  );
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
