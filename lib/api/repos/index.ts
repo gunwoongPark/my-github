@@ -8,7 +8,7 @@ const reposApi = {
     direction,
     per_page,
     page,
-  }: ReposReq): Promise<ReposRes> =>
+  }: ReposReq): Promise<ReposRes[]> =>
     apiBase.get(
       `users/${username}/repos?sort=${sort}&direction=${direction}&per_page=${per_page}&page=${page}`
     ),
