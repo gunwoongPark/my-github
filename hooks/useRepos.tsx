@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import reposApi from "../lib/api/repos";
 import {
@@ -23,7 +23,11 @@ export const fetchRepositories = async (query?: string) => {
 const useRepos = () => {
   const router = useRouter();
 
-  const [filterValue, setFilterValue] = useState<FilterValueType>({});
+  const [filterValue, setFilterValue] = useState<FilterValueType>({
+    sort: "full_name",
+    direction: "asc",
+    page: 1,
+  });
 
   // init query
   useIsReady(() => {

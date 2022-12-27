@@ -1,9 +1,15 @@
-import { isEmpty, isNil } from "lodash";
+import { filter, isEmpty, isNil } from "lodash";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { dehydrate, QueryClient } from "react-query";
+import useIsReady from "../../hooks/useIsReady";
 import useRepos, { fetchRepositories } from "../../hooks/useRepos";
-import { DirectionType, SortType } from "../../lib/api/repos/schema";
+import {
+  DirectionType,
+  FilterValueType,
+  SortType,
+} from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
 
 const ReposPage = () => {
@@ -15,7 +21,8 @@ const ReposPage = () => {
   return (
     <>
       <select
-        value={router.query.direction ?? "asc"}
+        // value={router.query.direction}
+        defaultValue={router.query.direction ?? "asc"}
         onChange={(e) => {
           setFilterValue((prevFilterValueState) => ({
             ...prevFilterValueState,
@@ -33,7 +40,8 @@ const ReposPage = () => {
       </select>
 
       <select
-        value={router.query.sort ?? "full_name"}
+        // value={router.query.sort}
+        defaultValue={router.query.sort ?? "full_name"}
         onChange={(e) => {
           setFilterValue((prevFilterValueState) => ({
             ...prevFilterValueState,
@@ -51,6 +59,7 @@ const ReposPage = () => {
         <option value="updated">updated</option>
         <option value="pushed">pushed</option>
       </select>
+
       {(() => {
         if (isLoading) {
           return <p>Loading...</p>;
@@ -78,22 +87,12 @@ const ReposPage = () => {
 
 export default ReposPage;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(
-    [
-      queryKeys.repos,
-      (context.query.sort as SortType) ? context.query.sort : "full_name",
-      (context.query.direction as DirectionType)
-        ? context.query.direction
-        : "asc",
-      context.query.page ?? 1,
-    ],
-    () =>
-      fetchRepositories(
-        `&sort=${context.query.sort}&direction=${context.query.direction}&page=${context.query.page}`
-      )
+    [queryKeys.repos, "full_name", "asc", 1],
+    () => fetchRepositories(`&sort=full_name&direction=asc&page=1`)
   );
   return {
     props: {

@@ -19,7 +19,7 @@ const useIsReady = (callback: () => void, deps?: DependencyList) => {
       callback();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps?.length ? [...deps] : []
+    deps?.length ? [...deps, router] : [router]
   );
 };
 
