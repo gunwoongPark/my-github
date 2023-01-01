@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import reposApi from "../lib/api/repos";
 import {
