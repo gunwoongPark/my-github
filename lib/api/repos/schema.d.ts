@@ -13,7 +13,6 @@ export type FilterValueType = {
 };
 
 export interface ReposReq {
-  username: string;
   query?: string;
 }
 
@@ -84,7 +83,6 @@ export interface ReposRes {
   has_wiki: boolean;
   has_pages: boolean;
   has_downloads: boolean;
-  has_discussions: boolean;
   archived: boolean;
   disabled: boolean;
   visibility: string;
@@ -92,7 +90,19 @@ export interface ReposRes {
   created_at: string;
   updated_at: string;
   permissions: Permissions;
-  security_and_analysis: SecurityAndAnalysis;
+  allow_rebase_merge: boolean;
+  template_repository: any;
+  temp_clone_token: string;
+  allow_squash_merge: boolean;
+  allow_auto_merge: boolean;
+  delete_branch_on_merge: boolean;
+  allow_merge_commit: boolean;
+  subscribers_count: number;
+  network_count: number;
+  license: License;
+  forks: number;
+  open_issues: number;
+  watchers: number;
 }
 
 export interface Owner {
@@ -122,20 +132,11 @@ export interface Permissions {
   pull: boolean;
 }
 
-export interface SecurityAndAnalysis {
-  advanced_security: AdvancedSecurity;
-  secret_scanning: SecretScanning;
-  secret_scanning_push_protection: SecretScanningPushProtection;
-}
-
-export interface AdvancedSecurity {
-  status: string;
-}
-
-export interface SecretScanning {
-  status: string;
-}
-
-export interface SecretScanningPushProtection {
-  status: string;
+export interface License {
+  key: string;
+  name: string;
+  url: string;
+  spdx_id: string;
+  node_id: string;
+  html_url: string;
 }
