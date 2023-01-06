@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery([queryKeys.repos, "pushed", "desc", 1], () =>
-    reposApi.fetchRepos({ query: "&sort=pushed&direction=desc&page=1" })
+    reposApi.fetchRepos({ sort: "pushed", direction: "desc", page: 1 })
   );
 
   return {
