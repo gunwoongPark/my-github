@@ -2,14 +2,14 @@ import { isEmpty } from "lodash";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import reposApi from "../lib/api/repos";
+import reposApi from "../../lib/api/repos";
 import {
   DirectionType,
   FilterValueType,
   SortType,
-} from "../lib/api/repos/schema";
-import { queryKeys } from "../react-query/queryKeys";
-import useIsReady from "./useIsReady";
+} from "../../lib/api/repos/schema";
+import { queryKeys } from "../../react-query/queryKeys";
+import useIsReady from "../useIsReady";
 
 export const fetchRepositories = async (query?: string) => {
   const res = await reposApi.fetchRepos({

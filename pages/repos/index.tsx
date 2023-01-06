@@ -2,7 +2,7 @@ import { isEmpty, isNil } from "lodash";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
-import useRepos, { fetchRepositories } from "../../hooks/useRepos";
+import useRepos, { fetchRepositories } from "../../hooks/react-query/useRepos";
 import type { DirectionType, SortType } from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
 
