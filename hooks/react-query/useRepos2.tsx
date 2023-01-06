@@ -1,3 +1,4 @@
+import { isNaN } from "lodash";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import type {
@@ -5,6 +6,7 @@ import type {
   FilterValueType,
   SortType,
 } from "../../lib/api/repos/schema";
+import { isNotNaN } from "../../util";
 import useIsReady from "../useIsReady";
 
 const useRepos2 = () => {
@@ -36,6 +38,10 @@ const useRepos2 = () => {
     }
 
     if (router.query.page) {
+      const _page = Number(router.query.page);
+      if (isNotNaN(_page)) {
+        setPage(_page);
+      }
     }
   });
 
