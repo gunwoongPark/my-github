@@ -1,78 +1,65 @@
-import { isEmpty } from "lodash";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import reposApi from "../../lib/api/repos";
-import {
-  DirectionType,
-  FilterValueType,
-  SortType,
-} from "../../lib/api/repos/schema";
+import type { DirectionType, SortType } from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
+import { isNotNaN } from "../../util";
 import useIsReady from "../useIsReady";
 
-export const fetchRepositories = async (query?: string) => {
-  const res = await reposApi.fetchRepos({
-    query,
-  });
-
-  return res;
-};
-
 const useRepos = () => {
+  // router
   const router = useRouter();
 
-  const [filterValue, setFilterValue] = useState<FilterValueType>({
-    sort: "full_name",
-    direction: "asc",
-    page: 1,
-  });
+  // state
+  const [sort, setSort] = useState<SortType>("pushed");
+  const [direction, setDirection] = useState<DirectionType>("desc");
+  const [page, setPage] = useState<number>(1);
 
-  // init query
+  // router ready
   useIsReady(() => {
-    if (router.query.page) {
-      setFilterValue((prevFilterValueState) => ({
-        ...prevFilterValueState,
-        page: Number(router.query.page),
-      }));
-    }
-
     if (router.query.sort) {
-      setFilterValue((prevFilterValueState) => ({
-        ...prevFilterValueState,
-        sort: router.query.sort as SortType,
-      }));
+      const sortArr: SortType[] = ["created", "full_name", "pushed", "updated"];
+      sortArr.forEach((_sort) => {
+        if (_sort === router.query.sort) {
+          setSort(_sort);
+        }
+      });
     }
 
     if (router.query.direction) {
-      setFilterValue((prevFilterValueState) => ({
-        ...prevFilterValueState,
-        direction: router.query.direction as DirectionType,
-      }));
+      const directionArr: DirectionType[] = ["asc", "desc"];
+      directionArr.forEach((_direction) => {
+        if (_direction === router.query.direction) {
+          setDirection(_direction);
+        }
+      });
+    }
+
+    if (router.query.page) {
+      const _page = Number(router.query.page);
+      if (isNotNaN(_page)) {
+        setPage(_page);
+      }
     }
   });
 
-  const queryString = (filterObject: FilterValueType) => {
-    const queryKeys = Object.keys(filterObject);
-
-    if (isEmpty(queryKeys)) {
-      return undefined;
-    }
-
-    return queryKeys.map((key) => `&${key}=${filterObject[key]}`).join("");
-  };
-
-  const { data: reposList, isLoading } = useQuery(
-    [
-      queryKeys.repos,
-      filterValue.sort ?? "full_name",
-      filterValue.direction ?? "asc",
-      filterValue.page ?? 1,
-    ],
-    () => fetchRepositories(queryString(filterValue))
+  // query
+  const { data: reposList = [], isLoading } = useQuery(
+    [queryKeys.repos, sort, direction, page],
+    () => reposApi.fetchRepos({ sort, direction, page })
   );
 
-  return { reposList, isLoading, setFilterValue };
+  return {
+    reposList,
+    isLoading,
+    direction,
+    setDirection,
+    sort,
+    setSort,
+    page,
+    setPage,
+  };
 };
 
 export default useRepos;

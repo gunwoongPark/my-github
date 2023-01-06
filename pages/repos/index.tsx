@@ -1,89 +1,82 @@
-import { isEmpty, isNil } from "lodash";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
-import useRepos, { fetchRepositories } from "../../hooks/react-query/useRepos";
+import useRepos2 from "../../hooks/react-query/useRepos";
+import reposApi from "../../lib/api/repos";
 import type { DirectionType, SortType } from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
+import { isNotBlank } from "../../util";
 
 const ReposPage = () => {
+  // router
   const router = useRouter();
 
-  const { reposList, isLoading, setFilterValue } = useRepos();
+  const {
+    reposList,
+    isLoading,
+    direction,
+    setDirection,
+    sort,
+    setSort,
+    page,
+    setPage,
+  } = useRepos2();
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
       <select
-        defaultValue={router.query.direction}
+        value={direction}
         onChange={(e) => {
-          setFilterValue((prevFilterValueState) => ({
-            ...prevFilterValueState,
-            direction: e.target.value as DirectionType,
-          }));
-
+          setDirection(e.target.value as DirectionType);
           router.replace({
             pathname: "/repos",
-            query: { direction: e.target.value, sort: router.query.sort },
+            query: { sort, direction: e.target.value, page },
           });
         }}
       >
-        <option value="asc">asc</option>
         <option value="desc">desc</option>
+        <option value="asc">asc</option>
       </select>
 
       <select
-        defaultValue={router.query.sort}
+        value={sort}
         onChange={(e) => {
-          setFilterValue((prevFilterValueState) => ({
-            ...prevFilterValueState,
-            sort: e.target.value as SortType,
-          }));
-
+          setSort(e.target.value as SortType);
           router.replace({
             pathname: "/repos",
-            query: { direction: router.query.direction, sort: e.target.value },
+            query: { sort: e.target.value, direction, page },
           });
         }}
       >
-        <option value="full_name">full_name</option>
-        <option value="created">created</option>
-        <option value="updated">updated</option>
         <option value="pushed">pushed</option>
+        <option value="updated">updated</option>
+        <option value="created">created</option>
+        <option value="full_name">full_name</option>
       </select>
-
-      {(() => {
-        if (isLoading) {
-          return <p>Loading...</p>;
-        }
-
-        if (isNil(reposList)) {
-          return <p>Error Occurred</p>;
-        }
-
-        if (isEmpty(reposList)) {
-          return <p>Empty</p>;
-        }
-
-        return (
-          <ul>
-            {reposList.map((repos, idx) => (
-              <li key={idx}>{repos.name}</li>
-            ))}
-          </ul>
-        );
-      })()}
+      {isNotBlank(reposList) ? (
+        <ul>
+          {reposList.map((repos) => (
+            <li key={repos.id}>{repos.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Repositories is Empty</p>
+      )}
     </>
   );
 };
 
 export default ReposPage;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(
-    [queryKeys.repos, "full_name", "asc", 1],
-    () => fetchRepositories(`&sort=full_name&direction=asc&page=1`)
+  await queryClient.prefetchQuery([queryKeys.repos, "pushed", "desc", 1], () =>
+    reposApi.fetchRepos({ sort: "pushed", direction: "desc", page: 1 })
   );
 
   return {
