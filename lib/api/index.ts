@@ -6,10 +6,10 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  async (request) => {
-    request.headers = request.headers ?? {};
-    request.headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`;
-    return request;
+  async (config) => {
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`;
+    return config;
   },
   (error) => {
     return Promise.reject(error);

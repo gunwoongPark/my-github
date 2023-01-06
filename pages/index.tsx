@@ -1,19 +1,17 @@
-import { dehydrate, QueryClient } from "react-query";
+import { dehydrate, QueryClient, useQueryClient } from "react-query";
 import useUser, { fetchUserInformation } from "../hooks/useUser";
 import { queryKeys } from "../react-query/queryKeys";
 
 export default function HomePage() {
-  const { userInformation, isFetching } = useUser();
+  // const { userInformation, isFetching } = useUser();
 
-  if (isFetching) {
-    return <p>Loading...</p>;
-  }
+  // if (isFetching) {
+  //   return <p>Loading...</p>;
+  // }
 
-  return (
-    <div>
-      <p>{userInformation?.login}</p>
-    </div>
-  );
+  const queryClient = useQueryClient();
+
+  return <div>{/* <p>{userInformation?.login}</p> */}</div>;
 }
 
 export const getServerSideProps = async () => {
