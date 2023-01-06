@@ -8,8 +8,14 @@ const reposApi = {
    * @param  {ReposReq} {query}
    * @returns Promise
    */
-  fetchRepos: ({ query }: ReposReq): Promise<ReposRes[]> =>
-    apiBase.get(`user/repos?per_page=5${isNil(query) ? "" : query}`),
+  fetchRepos: ({
+    sort = "pushed",
+    direction = "desc",
+    page = 1,
+  }: ReposReq): Promise<ReposRes[]> =>
+    apiBase.get(
+      `user/repos?per_page=5&sort=${sort}&direction=${direction}&page=${page}`
+    ),
 };
 
 export default reposApi;

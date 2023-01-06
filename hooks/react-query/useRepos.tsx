@@ -13,7 +13,6 @@ import useIsReady from "../useIsReady";
 
 export const fetchRepositories = async (query?: string) => {
   const res = await reposApi.fetchRepos({
-    username: process.env.NEXT_PUBLIC_USER_NAME as string,
     query,
   });
 
