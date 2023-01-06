@@ -13,9 +13,9 @@ export type FilterValueType = {
 };
 
 export interface ReposReq {
-  sort?: SortType;
-  direction?: DirectionType;
-  page?: number;
+  sort: SortType;
+  direction: DirectionType;
+  page: number;
 }
 
 export interface ReposRes {

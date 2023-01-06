@@ -3,11 +3,28 @@ import { dehydrate, QueryClient } from "react-query";
 import useRepos2 from "../hooks/react-query/useRepos2";
 import reposApi from "../lib/api/repos";
 import { queryKeys } from "../react-query/queryKeys";
+import { isNotBlank } from "../util";
 
 const Repos2Page = () => {
-  const {} = useRepos2();
+  const { reposList, isLoading } = useRepos2();
 
-  return <></>;
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <>
+      {isNotBlank(reposList) ? (
+        <ul>
+          {reposList.map((repos) => (
+            <li key={repos.id}>{repos.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Repositories is Empty</p>
+      )}
+    </>
+  );
 };
 
 export default Repos2Page;

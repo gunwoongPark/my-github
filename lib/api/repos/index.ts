@@ -8,11 +8,7 @@ const reposApi = {
    * @param  {ReposReq} {query}
    * @returns Promise
    */
-  fetchRepos: ({
-    sort = "pushed",
-    direction = "desc",
-    page = 1,
-  }: ReposReq): Promise<ReposRes[]> =>
+  fetchRepos: ({ sort, direction, page }: ReposReq): Promise<ReposRes[]> =>
     apiBase.get(
       `user/repos?per_page=5&sort=${sort}&direction=${direction}&page=${page}`
     ),
