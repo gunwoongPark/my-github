@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
-import useRepos2 from "../../hooks/react-query/useRepos";
+import useRepos from "../../hooks/react-query/useRepos";
 import reposApi from "../../lib/api/repos";
 import type { DirectionType, SortType } from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
@@ -20,7 +20,7 @@ const ReposPage = () => {
     setSort,
     page,
     setPage,
-  } = useRepos2();
+  } = useRepos();
 
   if (isLoading) {
     return <p>Loading...</p>;
