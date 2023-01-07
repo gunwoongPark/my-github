@@ -1,5 +1,4 @@
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
 import useRepos from "../../hooks/react-query/useRepos";
@@ -62,7 +61,7 @@ const ReposPage = () => {
 
       <button
         onClick={() => {
-          router.push({
+          router.replace({
             pathname: "/repos",
             query: { sort, direction, page: page - 1 },
           });
@@ -72,7 +71,7 @@ const ReposPage = () => {
       </button>
       <button
         onClick={() => {
-          router.push({
+          router.replace({
             pathname: "/repos",
             query: { sort, direction, page: page + 1 },
           });

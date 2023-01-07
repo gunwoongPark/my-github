@@ -5,7 +5,6 @@ import reposApi from "../../lib/api/repos";
 import type { DirectionType, SortType } from "../../lib/api/repos/schema";
 import { queryKeys } from "../../react-query/queryKeys";
 import { isNotNaN } from "../../util";
-import useIsReady from "../useIsReady";
 
 const useRepos = () => {
   // router
@@ -17,33 +16,39 @@ const useRepos = () => {
   const [page, setPage] = useState<number>(1);
 
   // router ready
-  useIsReady(() => {
-    if (router.query.sort) {
-      const sortArr: SortType[] = ["created", "full_name", "pushed", "updated"];
-      sortArr.forEach((_sort) => {
-        if (_sort === router.query.sort) {
-          setSort(_sort);
-        }
-      });
-    }
+  useEffect(() => {
+    if (router.isReady) {
+      if (router.query.sort) {
+        const sortArr: SortType[] = [
+          "created",
+          "full_name",
+          "pushed",
+          "updated",
+        ];
+        sortArr.forEach((_sort) => {
+          if (_sort === router.query.sort) {
+            setSort(_sort);
+          }
+        });
+      }
 
-    if (router.query.direction) {
-      const directionArr: DirectionType[] = ["asc", "desc"];
-      directionArr.forEach((_direction) => {
-        if (_direction === router.query.direction) {
-          setDirection(_direction);
-        }
-      });
-    }
+      if (router.query.direction) {
+        const directionArr: DirectionType[] = ["asc", "desc"];
+        directionArr.forEach((_direction) => {
+          if (_direction === router.query.direction) {
+            setDirection(_direction);
+          }
+        });
+      }
 
-    if (router.query.page) {
-      const _page = Number(router.query.page);
-      console.log(_page);
-      if (isNotNaN(_page)) {
-        setPage(_page);
+      if (router.query.page) {
+        const _page = Number(router.query.page);
+        if (isNotNaN(_page)) {
+          setPage(_page);
+        }
       }
     }
-  });
+  }, [router]);
 
   // query
   const { data: reposList = [], isLoading } = useQuery(
