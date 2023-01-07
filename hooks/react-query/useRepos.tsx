@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import reposApi from "../../lib/api/repos";
 import type { DirectionType, SortType } from "../../lib/api/repos/schema";
@@ -38,6 +38,7 @@ const useRepos = () => {
 
     if (router.query.page) {
       const _page = Number(router.query.page);
+      console.log(_page);
       if (isNotNaN(_page)) {
         setPage(_page);
       }
@@ -58,7 +59,6 @@ const useRepos = () => {
     sort,
     setSort,
     page,
-    setPage,
   };
 };
 

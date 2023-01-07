@@ -1,4 +1,5 @@
 import { GetServerSideProps } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
 import useRepos from "../../hooks/react-query/useRepos";
@@ -11,16 +12,8 @@ const ReposPage = () => {
   // router
   const router = useRouter();
 
-  const {
-    reposList,
-    isLoading,
-    direction,
-    setDirection,
-    sort,
-    setSort,
-    page,
-    setPage,
-  } = useRepos();
+  const { reposList, isLoading, direction, setDirection, sort, setSort, page } =
+    useRepos();
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -66,6 +59,27 @@ const ReposPage = () => {
       ) : (
         <p>Repositories is Empty</p>
       )}
+
+      <button
+        onClick={() => {
+          router.push({
+            pathname: "/repos",
+            query: { sort, direction, page: page - 1 },
+          });
+        }}
+      >
+        Prev
+      </button>
+      <button
+        onClick={() => {
+          router.push({
+            pathname: "/repos",
+            query: { sort, direction, page: page + 1 },
+          });
+        }}
+      >
+        Next
+      </button>
     </>
   );
 };
