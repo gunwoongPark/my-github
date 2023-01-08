@@ -3,7 +3,6 @@ import React, { ChangeEvent, createContext, useEffect, useState } from "react";
 import { DefaultTheme, ThemeProvider } from "styled-components";
 import { darkMode, lightMode } from "../lib/theme";
 import { ThemeType } from "../type";
-import { getTheme } from "../util/getTheme";
 
 export type CustomThemeContextValueType = {
   theme: DefaultTheme;
@@ -55,7 +54,7 @@ const CustomThemeProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   if (isNil(theme)) {
-    return <p>Loading...</p>;
+    return <p>Full Page Loading...</p>;
   }
 
   return (

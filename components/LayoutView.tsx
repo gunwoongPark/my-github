@@ -4,9 +4,7 @@ import { useTheme } from "styled-components";
 import { themeContext } from "../context/CustomThemeProvider";
 
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
-  const value = useContext(themeContext);
-
-  console.log(value);
+  const customThemeContext = useContext(themeContext);
 
   return (
     <>
@@ -22,7 +20,11 @@ const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
           </ul>
         </nav>
 
-        {/* <input type="checkbox" /> */}
+        <input
+          type="checkbox"
+          checked={customThemeContext?.theme.mode === "DARK"}
+          onChange={customThemeContext?.toggleTheme}
+        />
       </header>
       <main>{props.children}</main>
     </>
