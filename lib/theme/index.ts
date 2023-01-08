@@ -1,19 +1,19 @@
-const theme = {
-  DARK: {
-    headerBackgroundColor: "#161b22",
-    headerMenuLabelColor: "#f78166",
-    dividerColor: "#21262d",
-    backgroundColor: "#0d1117",
-    color: "#ffffff",
-  },
+import { DefaultTheme } from "styled-components";
 
-  LIGHT: {
-    headerBackgroundColor: "#24292f",
-    headerMenuLabelColor: "#fd8c73",
-    dividerColor: "hsla(210,18%,87%,1)",
-    backgroundColor: "#ffffff",
-    color: "#000000",
-  },
+export const darkMode: DefaultTheme = {
+  mode: "DARK",
+  headerBackgroundColor: "#161b22",
+  headerMenuLabelColor: "#f78166",
+  dividerColor: "#21262d",
+  backgroundColor: "#0d1117",
+  color: "#ffffff",
 };
 
-export default theme;
+export const lightMode: DefaultTheme = {
+  mode: "LIGHT",
+  headerBackgroundColor: "#24292f",
+  headerMenuLabelColor: "#fd8c73",
+  dividerColor: "hsla(210,18%,87%,1)",
+  backgroundColor: "#ffffff",
+  color: "#000000",
+};
