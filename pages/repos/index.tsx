@@ -12,10 +12,18 @@ const ReposPage = () => {
   // router
   const router = useRouter();
 
-  const { reposList, isLoading, direction, setDirection, sort, setSort, page } =
-    useRepos();
+  const {
+    reposList,
+    isFetching,
+    direction,
+    setDirection,
+    sort,
+    setSort,
+    page,
+  } = useRepos();
 
-  if (isLoading) {
+  if (isFetching) {
+    console.log("loading...");
     return <p>Loading...</p>;
   }
 
@@ -52,7 +60,7 @@ const ReposPage = () => {
       </select>
       {isNotBlank(reposList) ? (
         <ul>
-          {reposList.map((repos) => (
+          {reposList?.map((repos) => (
             <li key={repos.id}>{repos.name}</li>
           ))}
         </ul>

@@ -1,10 +1,7 @@
 import Link from "next/link";
+import { PropsWithChildren } from "react";
 
-type PropType = {
-  children: React.ReactNode;
-};
-
-const LayoutView: React.FC<PropType> = ({ children }) => {
+const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
   return (
     <>
       <header>
@@ -19,7 +16,7 @@ const LayoutView: React.FC<PropType> = ({ children }) => {
           </ul>
         </nav>
       </header>
-      <main>{children}</main>
+      <main>{props.children}</main>
     </>
   );
 };

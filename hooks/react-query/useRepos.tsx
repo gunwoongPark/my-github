@@ -51,14 +51,18 @@ const useRepos = () => {
   }, [router]);
 
   // query
-  const { data: reposList = [], isLoading } = useQuery(
+  const { data: reposList, isFetching } = useQuery(
     [queryKeys.repos, sort, direction, page],
-    () => reposApi.fetchRepos({ sort, direction, page })
+    () => reposApi.fetchRepos({ sort, direction, page }),
+    {
+      keepPreviousData: true,
+      placeholderData: () => [],
+    }
   );
 
   return {
     reposList,
-    isLoading,
+    isFetching,
     direction,
     setDirection,
     sort,
