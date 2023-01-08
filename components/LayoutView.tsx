@@ -1,10 +1,28 @@
 import Link from "next/link";
-import { PropsWithChildren, useContext } from "react";
-import { useTheme } from "styled-components";
-import { themeContext } from "../context/CustomThemeProvider";
+import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
 
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
-  // const customThemeContext = useContext(themeContext);
+  const [theme, setTheme] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setTheme(document.body.className);
+    }
+  }, []);
+
+  const toggleTheme = (e: ChangeEvent<HTMLInputElement>) => {
+    if (typeof window !== "undefined") {
+      if (e.target.checked) {
+        document.body.className = "dark-theme";
+        setTheme("dark-theme");
+        window.localStorage.setItem("theme", "dark-theme");
+      } else {
+        document.body.className = "light-theme";
+        setTheme("light-theme");
+        window.localStorage.setItem("theme", "light-theme");
+      }
+    }
+  };
 
   return (
     <>
@@ -20,11 +38,11 @@ const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
           </ul>
         </nav>
 
-        {/* <input
+        <input
           type="checkbox"
-          checked={customThemeContext?.theme.mode === "DARK"}
-          onChange={customThemeContext?.toggleTheme}
-        /> */}
+          checked={theme === "dark-theme"}
+          onChange={toggleTheme}
+        />
       </header>
       <main>{props.children}</main>
     </>

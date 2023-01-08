@@ -7,8 +7,6 @@ import queryClient from "../react-query";
 import { GlobalStyle } from "../styles/GlobalStyle";
 
 export default function App({ Component, pageProps }: AppProps) {
-  console.log("_app.tsx");
-
   return (
     <>
       <Script id="theme-script" strategy="afterInteractive">
@@ -16,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
           const localStorageTheme = localStorage.getItem('theme');
 
           if(localStorageTheme){
-            if(localStorageTheme === "DARK"){
+            if(localStorageTheme === "dark-theme"){
               document.querySelector('body').className = "dark-theme";
             }else{
               document.querySelector('body').className = "light-theme";
@@ -36,13 +34,10 @@ export default function App({ Component, pageProps }: AppProps) {
       </Script>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          {/* <CustomThemeProvider> */}
-
           <LayoutView>
             <Component {...pageProps} />
           </LayoutView>
           <GlobalStyle />
-          {/* </CustomThemeProvider> */}
         </Hydrate>
         <ReactQueryDevtools />
       </QueryClientProvider>
