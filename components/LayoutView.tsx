@@ -1,7 +1,14 @@
 import Link from "next/link";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useContext, useEffect } from "react";
+import { themeContext } from "../context/ThemeProvider";
 
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
+  const value = useContext(themeContext);
+
+  useEffect(() => {
+    console.log(value?.theme);
+  }, [value]);
+
   return (
     <>
       <header>
@@ -15,6 +22,12 @@ const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
             </li>
           </ul>
         </nav>
+
+        <input
+          type="checkbox"
+          checked={value?.theme.mode === "DARK"}
+          onChange={value?.toggleTheme}
+        />
       </header>
       <main>{props.children}</main>
     </>

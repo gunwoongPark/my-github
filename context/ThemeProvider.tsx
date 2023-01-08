@@ -3,9 +3,9 @@ import { DefaultTheme } from "styled-components";
 import { darkMode, lightMode } from "../lib/theme";
 import { getTheme } from "../util/getTheme";
 
-type ThemeContextValueType = {
-  value: DefaultTheme;
-  action: (e: ChangeEvent<HTMLInputElement>) => void;
+export type ThemeContextValueType = {
+  theme: DefaultTheme;
+  toggleTheme: (e: ChangeEvent<HTMLInputElement>) => void;
 } | null;
 
 // create context
@@ -16,18 +16,20 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   // toggle theme
   const toggleTheme = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("toggle !!");
+
     if (e.target.checked) {
-      localStorage.setItem("theme", "DARK");
+      localStorage.setItem("mode", "DARK");
       setTheme(darkMode);
     } else {
-      localStorage.setItem("theme", "LIGHT");
+      localStorage.setItem("mode", "LIGHT");
       setTheme(lightMode);
     }
   };
 
   const value = {
-    value: theme,
-    action: (e: ChangeEvent<HTMLInputElement>) => toggleTheme(e),
+    theme: theme,
+    toggleTheme: (e: ChangeEvent<HTMLInputElement>) => toggleTheme(e),
   };
 
   return (
