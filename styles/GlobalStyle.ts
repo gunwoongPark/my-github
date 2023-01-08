@@ -1,11 +1,16 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-import { ThemeType } from "../type";
 
-export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
+export const GlobalStyle = createGlobalStyle`
   ${reset}
-  body{
-    background:${(props) => props.theme.backgroundColor};
-    color:${(props) => props.theme.color};
-  }    
+  
+  body[class='dark-theme']{
+    background: #000;
+    color: #fff;
+  }
+  
+  body[class='light-theme']{
+    background: #fff;
+    color: #000;
+  }
 `;

@@ -23,7 +23,6 @@ const ReposPage = () => {
   } = useRepos();
 
   if (isFetching) {
-    console.log("loading...");
     return <p>Loading...</p>;
   }
 
