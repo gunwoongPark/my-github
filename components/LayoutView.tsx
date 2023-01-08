@@ -5,10 +5,6 @@ import { themeContext } from "../context/ThemeProvider";
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
   const value = useContext(themeContext);
 
-  useEffect(() => {
-    console.log(value?.theme);
-  }, [value]);
-
   return (
     <>
       <header>

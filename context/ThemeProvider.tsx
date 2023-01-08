@@ -16,7 +16,10 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
   // toggle theme
   const toggleTheme = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
     console.log("toggle !!");
+    console.log(theme);
 
     if (e.target.checked) {
       localStorage.setItem("mode", "DARK");
