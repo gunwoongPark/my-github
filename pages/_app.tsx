@@ -14,10 +14,10 @@ export default function App({ Component, pageProps }: AppProps) {
           const localStorageTheme = localStorage.getItem('theme');
 
           if(localStorageTheme){
-            if(localStorageTheme === "dark-theme"){
-              document.querySelector('body').className = "dark-theme";
+            if(localStorageTheme === "DARK"){
+              document.querySelector('body').className = "DARK";
             }else{
-              document.querySelector('body').className = "light-theme";
+              document.querySelector('body').className = "LIGHT";
             }
           }
 
@@ -25,9 +25,9 @@ export default function App({ Component, pageProps }: AppProps) {
             const osTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
             if(osTheme){
-              document.querySelector('body').className = "dark-theme";
+              document.querySelector('body').className = "DARK";
             }else{
-              document.querySelector('body').className = "light-theme";
+              document.querySelector('body').className = "LIGHT";
             }
           }
         `}

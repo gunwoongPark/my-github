@@ -4,13 +4,14 @@ import reset from "styled-reset";
 export const GlobalStyle = createGlobalStyle`
   ${reset}
   
-  body[class='dark-theme']{
+  body[class='DARK']{
     background: #000;
     color: #fff;
   }
   
-  body[class='light-theme']{
+  body[class='LIGHT']{
     background: #fff;
     color: #000;
   }
+
 `;
