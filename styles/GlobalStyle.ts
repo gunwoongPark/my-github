@@ -3,13 +3,13 @@ import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
   ${reset}
-  
-  body[class='DARK']{
+
+  html[data-theme='DARK']{
     background: #000;
     color: #fff;
   }
   
-  body[class='LIGHT']{
+  html[data-theme='LIGHT']{
     background: #fff;
     color: #000;
   }
