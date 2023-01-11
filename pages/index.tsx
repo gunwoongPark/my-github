@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { dehydrate, QueryClient } from "react-query";
 import styled from "styled-components";
 import useUser from "../hooks/react-query/useUser";
