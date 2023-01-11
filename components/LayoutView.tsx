@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
+import { ChangeEvent, PropsWithChildren } from "react";
 
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
   const { theme, setTheme } = useTheme();

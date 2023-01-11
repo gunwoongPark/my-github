@@ -1,6 +1,6 @@
 import { DefaultTheme } from "styled-components";
 
-export const darkMode: DefaultTheme = {
+export const darkTheme: DefaultTheme = {
   mode: "DARK",
   headerBackgroundColor: "#161b22",
   headerMenuLabelColor: "#f78166",
@@ -9,7 +9,7 @@ export const darkMode: DefaultTheme = {
   color: "#ffffff",
 };
 
-export const lightMode: DefaultTheme = {
+export const lightTheme: DefaultTheme = {
   mode: "LIGHT",
   headerBackgroundColor: "#24292f",
   headerMenuLabelColor: "#fd8c73",
