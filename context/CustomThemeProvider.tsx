@@ -1,4 +1,5 @@
-import React, { ChangeEvent, createContext, useState } from "react";
+import { isNil } from "lodash";
+import React, { ChangeEvent, createContext, useEffect, useState } from "react";
 import { DefaultTheme, ThemeProvider } from "styled-components";
 import { themeProvider } from "../lib/theme";
 import { ThemeType } from "../types/theme";
@@ -29,14 +30,16 @@ const CustomThemeProvider = (props: {
     }
   };
 
-  const value = {
-    value: theme,
-    action: (e: ChangeEvent<HTMLInputElement>) => toggleTheme(e),
-  };
-
   return (
-    <themeContext.Provider value={value}>
-      <ThemeProvider theme={theme}>{props.children}</ThemeProvider>
+    <themeContext.Provider
+      value={{
+        value: theme,
+        action: (e: ChangeEvent<HTMLInputElement>) => toggleTheme(e),
+      }}
+    >
+      <ThemeProvider theme={theme as DefaultTheme}>
+        {props.children}
+      </ThemeProvider>
     </themeContext.Provider>
   );
 };

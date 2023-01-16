@@ -6,24 +6,18 @@ import LayoutView from "../components/LayoutView";
 import CustomThemeProvider from "../context/CustomThemeProvider";
 import queryClient from "../react-query";
 import { GlobalStyle } from "../styles/GlobalStyle";
-import { ThemeType } from "../types/theme";
 
 export default function MyApp(props: AppProps) {
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={props.pageProps.dehydratedState}>
-          {/* <ThemeProvider> */}
-
-          <CustomThemeProvider
-            cookieTheme={(props.cookieTheme as ThemeType) ?? "LIGHT"}
-          >
+          <CustomThemeProvider cookieTheme={props.cookieTheme ?? "DARK"}>
             <LayoutView>
               <props.Component {...props.pageProps} />
             </LayoutView>
             <GlobalStyle />
           </CustomThemeProvider>
-          {/* </ThemeProvider> */}
         </Hydrate>
         <ReactQueryDevtools />
       </QueryClientProvider>
@@ -34,8 +28,10 @@ export default function MyApp(props: AppProps) {
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
 
+  const cookieTheme = appContext.ctx.req?.cookies.theme;
+
   return {
     ...appProps,
-    cookieTheme: appContext.ctx.req?.headers.cookie,
+    cookieTheme,
   };
 };
