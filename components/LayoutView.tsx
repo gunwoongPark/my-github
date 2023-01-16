@@ -6,10 +6,6 @@ import { themeContext } from "../context/CustomThemeProvider";
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
   const context = useContext(themeContext);
 
-  useEffect(() => {
-    console.log(context);
-  }, [context]);
-
   return (
     <S.Container>
       <header>
@@ -26,7 +22,7 @@ const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
 
         <input
           type="checkbox"
-          checked={context?.value === "DARK"}
+          checked={context?.value.mode === "DARK"}
           onChange={context?.action}
         />
       </header>
