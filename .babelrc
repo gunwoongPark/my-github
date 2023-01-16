@@ -6,7 +6,8 @@
       {
         "fileName": true,
         "displayName": true,
-        "pure": true
+        "pure": true,
+        "ssr": true
       }
     ]
   ]

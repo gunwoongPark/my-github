@@ -1,20 +1,17 @@
-import { useTheme } from "next-themes";
 import Link from "next/link";
-import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useContext, useEffect } from "react";
+import styled from "styled-components";
+import { themeContext } from "../context/CustomThemeProvider";
 
 const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
-  const { theme, setTheme } = useTheme();
+  const context = useContext(themeContext);
 
-  const toggleTheme = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setTheme("DARK");
-    } else {
-      setTheme("LIGHT");
-    }
-  };
+  useEffect(() => {
+    console.log(context);
+  }, [context]);
 
   return (
-    <>
+    <S.Container>
       <header>
         <nav>
           <ul>
@@ -29,13 +26,19 @@ const LayoutView = (props: PropsWithChildren<Record<never, any>>) => {
 
         <input
           type="checkbox"
-          checked={theme === "DARK"}
-          onChange={toggleTheme}
+          checked={context?.value === "DARK"}
+          onChange={context?.action}
         />
       </header>
       <main>{props.children}</main>
-    </>
+    </S.Container>
   );
 };
 
 export default LayoutView;
+
+const S = {
+  Container: styled.div`
+    background-color: ${(props) => props.theme.backgroundColor};
+  `,
+};
